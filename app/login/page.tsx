@@ -1,14 +1,15 @@
 'use client'
 
 import { useState } from "react"
-import { createBrowserSupabase } from "@/lib/supabase"
+import { supabase } from "@/lib/supabase-client"
 
 export default function Login() {
     const [email, setEmail] = useState('')
-    const supabase = createBrowserSupabase()
-
+    
+    
+    
         const handleLogin = async () => {
-            const { error } = await supabase.auth.signWithOtp({ email })
+            const { error } = await supabase.auth.signInWithOtp({ email })
               if (error) alert('Check your email!')
         }
     
