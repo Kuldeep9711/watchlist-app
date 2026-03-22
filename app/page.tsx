@@ -1,19 +1,38 @@
 import { Suspense } from "react";
 import MoviesSection from "./components/MoviesSection";
 import Categories from "@/components/Categories";
+import SearchAndMovies from "@/components/SearchAndMovies";
 
 export default function HomePage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; genre?: string }>;
 }) {
 
+   return (
+    <main className="min-h-screen p-6 md:p-10 bg-black text-white">
+
+      <h1 className="text-4xl font-bold mb-8 text-center">
+         Movie Watchlist
+      </h1>
+
+      <Suspense fallback={<p className="text-center py-20">Loading...</p>}>
+         <SearchAndMovies searchParams={searchParams} />
+      </Suspense>
+
+    </main>
+   );
+  }
+
+/*
   return (
     <main className="min-h-screen p-6 md:p-10 bg-black text-white">
 
       <h1 className="text-4xl font-bold mb-8 text-center">
         Movie Watchlist
       </h1>
+
+
 
         <form className="flex gap-3 mb-10 max-w-2xl mx-auto" action="">
           <input
@@ -29,7 +48,9 @@ export default function HomePage({
           </button>
       </form>
  
+ <Suspense fallback={null}>
     <Categories />
+  </Suspense>
 
       <Suspense fallback={<p className="text-center py-20">Loading movies...</p>}>
         <MoviesSection searchParams={searchParams} />
@@ -38,4 +59,4 @@ export default function HomePage({
     </main>
   );
 }
-
+*/
