@@ -4,7 +4,7 @@ import { supabase } from "@/lib/supabase-client"
 import { Check, Heart, Star } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-
+import Link from "next/link";
 
 
 interface Movie {
@@ -94,7 +94,8 @@ export default function MovieCard ({ movie }: Props) {
         onMouseLeave={() => setIsHovered(false)}
         >
             {/* Poster */}
-            <div className="relative aspect-[2/3] overflow-hidden">
+            <Link href={`/movie/${movie.id}`}>
+            <div className="relative aspect-[2/3] overflow-hidden cursor-pointer">
                {movie.poster_path ? (
                 <Image
                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
@@ -107,8 +108,9 @@ export default function MovieCard ({ movie }: Props) {
                 <div className="w-full h-full bg-zinc-800 flex items-center justify-center">
                       <span className="text-gray-500">No Poster</span>
                     </div>
+                    
                )}
-
+              
                {/* Rating Badge */}
                {movie.vote_average > 0 && (
                 <div className="absolute top-3 right-3 bg-black/70 backdrop-blur-md text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
@@ -130,6 +132,7 @@ export default function MovieCard ({ movie }: Props) {
                 </div>
                </div>
             </div>
+             </Link>
 
           {/* Content */}
           <div className="p-4">
@@ -147,7 +150,7 @@ export default function MovieCard ({ movie }: Props) {
                 isInWatchlist
                 ? 'bg-green-600 hover:bg-green-700 text-white'
                 : 'bg-blue-600 hover:bg-blue-700 text-white'
-                } disabled:opaacity-70`}
+                } disabled:opacity-70`}
             >
               {isLoading ? (
                 <>
