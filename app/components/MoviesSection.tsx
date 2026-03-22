@@ -1,68 +1,106 @@
 import MovieCard from "@/components/MovieCard";
 
-async function fetchPopularMovies() {
+async function fetchPopularMovies(page: number) {
   const res = await fetch(
-    `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.TMDB_API_KEY}&language=en-US&page=1`,
-    { next: { revalidate: 3600 } }
+    `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.TMDB_API_KEY}&page=${page}`,
+  //  { next: { revalidate: 3600 } }
   );
 
   const data = await res.json();
-  return data.results || [];
+   return data;
 }
 
-async function searchTMDBMovies(query: string) {
-  if (!query.trim()) return [];
-
+async function searchTMDBMovies(query: string, page: number) {
   const res = await fetch(
-    `https://api.themoviedb.org/3/search/movie?api_key=${process.env.TMDB_API_KEY}&query=${encodeURIComponent(query)}`
+    `https://api.themoviedb.org/3/search/movie?api_key=${process.env.TMDB_API_KEY}&query=${query}&page=${page}`
   );
 
   const data = await res.json();
-  return data.results || [];
+  return data;
 }
 
-async function fetchByGenre(genreId: string) {
+async function fetchByGenre(genreId: string, page: number) {
   const res = await fetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.TMDB_API_KEY}&with_genres=${genreId}`
+    `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.TMDB_API_KEY}&with_genres=${genreId}&page=${page}`
   );
 
   const data = await res.json();
-  return data.results || [];
+  return data;
 }
 
 export default async function MoviesSection({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; genre?: string }>;
+  searchParams: Promise<{ q?: string; genre?: string; page?: number }>;
 }) {
 
-  const { q: query = "", genre } = await searchParams;
+  const { q: query = "", genre, page = "1" } = await searchParams;
+  
+  const currentPage = Number(page);
 
-  /*
-  const movies = query
-    ? await searchTMDBMovies(query)
-    : await fetchPopularMovies(); */
 
-    let movies = []
+    let data;
     
      if (query) {
-      movies = await searchTMDBMovies(query);
+      data = await searchTMDBMovies(query, currentPage);
      } else if (genre) {
-      movies = await fetchByGenre(genre);
+      data = await fetchByGenre(genre, currentPage);
      } else {
-      movies = await fetchPopularMovies();
+      data = await fetchPopularMovies(currentPage);
      }
+
+     const movies = data?.results || [];
+     const totalPages = data?.total_pages || 1;
+
+    // console.log("DATA:", data);
 
   if (movies.length === 0) {
     return <p className="text-center py-20">No movies found</p>;
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+   <>
+   
+   <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
       {movies.map((movie: any) => (
         <MovieCard key={movie.id} movie={movie} />
       ))}
+   </div>
+
+    {/* 🔥 Pagination UI (ADD HERE) */}
+    <div className="flex justify-center gap-4 mt-10">
+
+    {currentPage > 1 && (
+      <a
+      href={`?${new URLSearchParams({
+        ...(query && { q: query }),
+        ...(genre && { genre }),
+        page: String(currentPage - 1),
+      })}`}
+      className="px-5 py-2 bg-zinc-800 rounded-lg"
+      >
+         ⬅ Prev
+      </a>
+    )}
+
+    <span className="px-4 py-2">
+         Page {currentPage}
+    </span>
+
+    {currentPage < totalPages && (
+      <a
+      href={`?${new URLSearchParams({
+        ...(query && { q: query }),
+        ...(genre && { genre }),
+        page: String(currentPage + 1),
+      })}`}
+      className="px-5 py-2 bg-zinc-800 rounded-lg"
+      >
+        Next ➡
+      </a>
+    )}
     </div>
+   </>
   );
 }
 

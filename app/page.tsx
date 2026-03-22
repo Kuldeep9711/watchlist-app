@@ -1,6 +1,4 @@
 import { Suspense } from "react";
-import MoviesSection from "./components/MoviesSection";
-import Categories from "@/components/Categories";
 import SearchAndMovies from "@/components/SearchAndMovies";
 
 export default function HomePage({

@@ -14,6 +14,12 @@ export default async function SearchAndMovies({
   return (
     <>
     {/* Search Form */}
+    <a
+    href="/"
+    className="block text-center mb-6 text-blue-400 hover:underline"
+    >
+        ⬅ Back to Home
+    </a>
     <form className="flex gap-3 mb-10 max-w-2xl mx-auto">
     <input
       name="q"
