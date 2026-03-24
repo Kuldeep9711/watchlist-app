@@ -134,6 +134,8 @@ export default function MovieCard ({ movie }: Props) {
             </div>
              </Link>
 
+             
+
           {/* Content */}
           <div className="p-4">
             <h3 className="font-semibold text-lg leading-tight line-clamp-2 mb-1">

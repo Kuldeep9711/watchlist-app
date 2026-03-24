@@ -17,7 +17,7 @@ export default function HomePage({
       <Suspense fallback={<p className="text-center py-20">Loading...</p>}>
          <SearchAndMovies searchParams={searchParams} />
       </Suspense>
-
+             
     </main>
    );
   }
