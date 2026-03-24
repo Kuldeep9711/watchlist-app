@@ -9,7 +9,7 @@ export default function HomePage({
 }) {
 
    return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="min-h-screen p-6 md:p-10 bg-black text-white">
 
       <h1 className="text-4xl font-bold mb-8 text-center">
          Movie Watchlist
@@ -20,7 +20,6 @@ export default function HomePage({
       <HeroBanner />
     </Suspense>
 
- {/* 🔍 Search + Movies */}
       <Suspense fallback={<p className="text-center py-20">Loading...</p>}>
          <SearchAndMovies searchParams={searchParams} />
       </Suspense>
