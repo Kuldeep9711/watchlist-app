@@ -11,7 +11,9 @@ export default function HomePage({
    return (
     <main className="min-h-screen p-6 md:p-10 bg-black text-white">
 
-      <h1 className="text-4xl font-bold mb-8 text-center">
+      <h1 className="text-6xl font-black mb-8 text-center tracking-tighter 
+               bg-gradient-to-r from-purple-400 via-pink-500 to-cyan-400 
+               bg-clip-text text-transparent drop-shadow-2xl">
          Movie Watchlist
       </h1>
 
